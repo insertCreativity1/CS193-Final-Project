@@ -16,7 +16,7 @@ I want to create an online version of the card game Flip 7, a card game where ea
 - Reset player's cards each round, but only reset the deck when it is empty
 - Check win condition of any player that has a total of 200 points spanning all rounds and end game when win condition is met
 
-![System diagram](System Diagram.drawio.png)
+![System diagram](SystemDiagram.drawio.png)
 
 ## Tech Stack
 
