@@ -1,9 +1,17 @@
 public class Card {
-    String type;
-    String value;
+    private String type;
+    private String value;
 
     public Card (String type, String value) {
         this.type = type;
         this.value = value;
+    }
+
+    public String getType() {
+        return type;    
+    }
+
+    public String getValue() {
+        return value;
     }
 }
