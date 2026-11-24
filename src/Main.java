@@ -1,28 +1,38 @@
+import java.util.Scanner;
+
 public static void main(String[] args) {
+    // Game Setup
+    Scanner scanner = new Scanner(System.in);
+    boolean running = true;
     System.out.println("Welcome to Flip 7!");
-    Deck deck = new Deck();
-    int n = 0;
-    deck.shuffle();
-    System.out.println("Testing deck");
-    System.out.println("Deck size: " + deck.size());
-    for (int j = 0; j < 94; j++) {
-        Card card = deck.deal();
-        if (card.getType().equals("Number")) {
-            n++;
-            System.out.println("Total Cards: " + n + ", Type: " + card.getType() + ", Value: " + card.getValue());
+    int playerCount = 0;
+    boolean valid = false;
+    do {
+        System.out.print("Please enter the number of players. (3-18)\n");
+        if (scanner.hasNextInt()) {
+            playerCount = scanner.nextInt();
+            valid = (playerCount >= 3 && playerCount <= 18);
+            if (!valid) {
+                System.out.println("Out of range. Please try again.");
+            }
+        } else {
+            System.out.println("That's not a valid number. Please try again.");
+            scanner.next();
+            playerCount = 0;
+            valid = false;
         }
-        else if (card.getType().equals("Action")) {
-            n++;
-            System.out.println("Total Cards: " + n + ", Type: " + card.getType() + ", Value: " + card.getValue());
-        }
-        else if (card.getType().equals("Modify")) {
-            n++;
-            System.out.println("Total Cards: " + n + ", Type: " + card.getType() + ", Value: " + card.getValue());
-        }
-        else {
-            System.out.println(card.getType() + " " + card.getValue());
-        }
-        //System.out.println("Type: " + card.type + ", Value: " + card.value);
+    } while (!valid);
+
+    // Setting Players and deck
+    Player[] players = new Player[playerCount];
+    for (int i = 0; i < playerCount; i++) {
+        System.out.println("Enter the name of the player " + (i + 1) + ": ");
+        String name = scanner.next();
+        players[i] = new Player(name);
     }
-    System.out.println();
+    Deck deck = new Deck();
+
+    while (running) {
+        ;
+    }
 }

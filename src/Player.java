@@ -29,7 +29,7 @@ public class Player {
                     numCount++;
                 }
             }
-        } else if (c.getType().equals("Modify") || c.getValue().equals("Second Chance") {
+        } else if (c.getType().equals("Modify") || c.getValue().equals("Second Chance")) {
             hand.add(c);
         }
         return c;
