@@ -18,7 +18,6 @@ public class Player {
         Card c = deck.deal();
         if (c.getType().equals("Number")) {
             for (Card card : hand) {
-                // Note: create check for second chance
                 if (c.getValue().equals(card.getValue())) {
                     if (!this.secondChance(true)) {
                         active = false;
