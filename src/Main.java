@@ -23,7 +23,7 @@ public static void main(String[] args) {
         }
     } while (!valid);
 
-    // Setting Players and deck
+    // Setting Players and Deck
     Player[] players = new Player[playerCount];
     for (int i = 0; i < playerCount; i++) {
         System.out.println("Enter the name of the player " + (i + 1) + ": ");
@@ -31,8 +31,40 @@ public static void main(String[] args) {
         players[i] = new Player(name);
     }
     Deck deck = new Deck();
+    deck.shuffle();
 
+    String input = "";
     while (running) {
-        ;
+        for (int i = 0; i < playerCount; i++) {
+            //Player p = player[i];
+            System.out.println("\nIt is " + players[i].getName() + "'s turn.");
+            if (players[i].isActive()) {
+                valid = false;
+                if (players[i].getHand().size() > 0) {
+                    System.out.print("Current hand: ");
+                    for (Card card : players[i].getHand()) {
+                        System.out.print(card.getValue() + " ");
+                    }
+                    System.out.println();
+                }
+                do {
+                    System.out.println("Would you like to hit or stay?\n1: Hit\n2: Stay");
+                    input = scanner.next();
+                    if (input.equals("1")) {
+                        valid = true;
+                        players[i].hit(deck);
+                        Card drawn = players[i].hit(deck);
+                        System.out.println("Your card is " + drawn.getValue());
+                    } else if (input.equals("2")) {
+                        valid = true;
+                        players[i].stay();
+                    } else {
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                } while (!valid);
+            } else {
+                System.out.println(players[i].getName() + "is inactive.");
+            }
+        }
     }
 }

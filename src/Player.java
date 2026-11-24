@@ -5,16 +5,20 @@ public class Player {
     ArrayList<Card> hand;
     boolean active;
     int numCount;
+    int total;
 
     // Constructor
     public Player (String name) {
         this.name = name;
-        active = true;
-        numCount = 0;
+        this.hand = new ArrayList<Card>();
+        this.active = true;
+        this.numCount = 0;
+        this.total = 0;
     }
 
     // When a player draws a card
     public Card hit(Deck deck) {
+        boolean valid = true;
         Card c = deck.deal();
         if (c.getType().equals("Number")) {
             for (Card card : hand) {
@@ -23,11 +27,14 @@ public class Player {
                         active = false;
                         System.out.println(name + " busted!\nPlay again next round.");
                         hand.clear();
+                        valid = false;
+                        break;
                     }
-                } else {
-                    hand.add(c);
-                    numCount++;
                 }
+            }
+            if (valid) {
+                hand.add(c);
+                numCount++;
             }
         } else if (c.getType().equals("Modify") || c.getValue().equals("Second Chance")) {
             hand.add(c);
@@ -41,11 +48,6 @@ public class Player {
         System.out.println(name + " is not active for the rest of this round.");
     }
 
-    // A player is active per round, inactive when chose to stay or busted
-    public boolean isActive() {
-        return active;
-    }
-
     // Check for Flip 7
     public boolean flippedSeven () {
         return active && numCount >= 7;
@@ -57,7 +59,8 @@ public class Player {
         for (Card card : hand) {
             if (card.getValue().equals("Second Chance")) {
                 if (check) {
-                    hand.remove(hand.indexOf(new Card("Action", "Second Chance")));
+                    Card c = new Card("Action", "Second Chance");
+                    hand.remove(hand.indexOf(c));
                 }
                 return true;
             }
@@ -74,7 +77,6 @@ public class Player {
                         if (!this.secondChance(true)) {
                             active = false;
                             System.out.println(name + " busted!\nPlay again next round.");
-                            hand.clear();
                         }
                     } else {
                         hand.add(c);
@@ -86,5 +88,41 @@ public class Player {
                 break;
             }
         }
+    }
+
+    // Clear player's hand when each round ends
+    public void endRound() {
+        if (active) {
+            ArrayList<String> modifiers = new ArrayList<>();
+            for (Card card : hand) {
+                if (card.getType().equals("Number")) {
+                    total += Integer.parseInt(card.getValue());
+                } else if (card.getType().equals("Modify")) {
+                    modifiers.add(card.getValue());
+                }
+            }
+        }
+        hand.clear();
+        active = true;
+        numCount = 0;
+    }
+
+    // Getters
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    // A player is active per round, inactive when chose to stay or busted
+    public boolean isActive() {
+        return active;
+    }
+
+    public int getTotal() {
+        return total;
     }
 }
