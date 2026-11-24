@@ -29,11 +29,7 @@ public class Player {
                     numCount++;
                 }
             }
-        } /*else if (c.getType().equals("Action")) {
-            if (c.getValue().equals("Freeze")) {
-                ;
-            }
-        } */else if (c.getType().equals("Modify")) {
+        } else if (c.getType().equals("Modify") || c.getValue().equals("Second Chance") {
             hand.add(c);
         }
         return c;
@@ -52,7 +48,7 @@ public class Player {
 
     // Check for Flip 7
     public boolean flippedSeven () {
-        return numCount >= 7;
+        return active && numCount >= 7;
     }
 
     // Returns if a player has a "Second Chance" card
@@ -67,5 +63,28 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public void flip3(Deck deck) {
+        for (int i = 0; i < 3; i++) {
+            Card c = deck.deal();
+            if (c.getType().equals("Number")) {
+                for (Card card : hand) {
+                    if (c.getValue().equals(card.getValue())) {
+                        if (!this.secondChance(true)) {
+                            active = false;
+                            System.out.println(name + " busted!\nPlay again next round.");
+                            hand.clear();
+                        }
+                    } else {
+                        hand.add(c);
+                        numCount++;
+                    }
+                }
+            }
+            if (flippedSeven()) {
+                break;
+            }
+        }
     }
 }
