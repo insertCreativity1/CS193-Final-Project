@@ -33,10 +33,11 @@ public static void main(String[] args) {
     Deck deck = new Deck();
     deck.shuffle();
 
+    // Main game loop
     String input = "";
     while (running) {
+        // Draw cards for active players
         for (int i = 0; i < playerCount; i++) {
-            //Player p = player[i];
             System.out.println("\nIt is " + players[i].getName() + "'s turn.");
             if (players[i].isActive()) {
                 valid = false;
@@ -53,8 +54,6 @@ public static void main(String[] args) {
                     if (input.equals("1")) {
                         valid = true;
                         players[i].hit(deck);
-                        Card drawn = players[i].hit(deck);
-                        System.out.println("Your card is " + drawn.getValue());
                     } else if (input.equals("2")) {
                         valid = true;
                         players[i].stay();
@@ -63,7 +62,37 @@ public static void main(String[] args) {
                     }
                 } while (!valid);
             } else {
-                System.out.println(players[i].getName() + "is inactive.");
+                System.out.println(players[i].getName() + " is inactive.");
+            }
+        }
+
+        // Check if the round or the game ended
+        int inactivePlayers = 0;
+        for (int i = 0; i < playerCount; i++) {
+            // Entire game over
+            if (players[i].getTotal() >= 200) {
+                running = false;
+                break;
+            }
+
+            // Flip 7 ends round
+            if (players[i].flippedSeven()) {
+                System.out.println("This round has ended. Counting totals...");
+                for (int j = 0; j < playerCount; j++) {
+                    players[j].endRound();
+                    System.out.println(players[j].getName() + "'s total is " + players[j].getTotal());
+                }
+            } else if (!players[i].isActive()) {
+                inactivePlayers++;
+            }
+        }
+
+        // If all players are inactive, end round
+        if (inactivePlayers == playerCount) {
+            System.out.println("This round has ended. Counting totals...");
+            for (int j = 0; j < playerCount; j++) {
+                players[j].endRound();
+                System.out.println(players[j].getName() + "'s total is " + players[j].getTotal());
             }
         }
     }

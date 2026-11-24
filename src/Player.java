@@ -20,11 +20,18 @@ public class Player {
     public Card hit(Deck deck) {
         boolean valid = true;
         Card c = deck.deal();
+        System.out.println("Your card is " + c.getValue());
         if (c.getType().equals("Number")) {
             for (Card card : hand) {
                 if (c.getValue().equals(card.getValue())) {
                     if (!this.secondChance(true)) {
                         active = false;
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            e.printStackTrace();
+                        }
                         System.out.println(name + " busted!\nPlay again next round.");
                         hand.clear();
                         valid = false;
@@ -92,7 +99,7 @@ public class Player {
 
     // Clear player's hand when each round ends
     public void endRound() {
-        if (active) {
+        if (hand.size() > 0) {
             ArrayList<String> modifiers = new ArrayList<>();
             for (Card card : hand) {
                 if (card.getType().equals("Number")) {
